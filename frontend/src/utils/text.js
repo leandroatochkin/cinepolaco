@@ -15,10 +15,11 @@ ui:{
     article_title: 'Título del artículo',
     article_date: 'Fecha',
     article_text: 'Texto',
-    article_category: 'Category',
+    article_category: 'Categorías',
     article_image: 'Fotos',
     add_article: 'Agregar artículo',
     existing_articles: 'Artículos existentes',
+    delete: 'borrar'
 }
 }
 

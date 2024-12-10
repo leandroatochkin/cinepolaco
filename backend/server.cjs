@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const cors = require('cors')
-const uuid = require('uuid')
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = 3001;
@@ -65,25 +65,39 @@ app.get('/articles', (req, res) => {
 });
 
 // Upload a new article with image
-app.post('/articles', upload.single('image'), (req, res) => {
-    console.log("Received file:", req.file);  // Debugging the image
-    const { title, content, category, date } = req.body;
-    if (!title || !content || !category || !date) return res.status(400).send('Title and content are required.');
-
+app.post('/articles', upload.array('images'), (req, res) => {
+    console.log('Body:', req.body);
+    console.log('Files:', req.files);
+  
+    const { title, content, category, date, comments } = req.body;
+  
+    if (!title || !content || !category || !date) {
+      return res.status(400).send('Title, content, category, and date are required.');
+    }
+  
+    // Ensure comments is an array
+    const commentsArray = Array.isArray(comments) ? comments : [comments];
+  
+    // Map files to their comments
+    const images = req.files.map((file, index) => ({
+      file: `/images/${file.filename}`,
+      comment: commentsArray[index] || '',
+    }));
+  
     const article = {
-        id: uuid(),
-        title,
-        content,
-        category,
-        date,
-        image: req.file ? `/images/${req.file.filename}` : null
+      id: uuid(),
+      title,
+      content,
+      category,
+      date,
+      images, // Array of images with comments
     };
-
+  
     const articlePath = path.join(articlesPath, `${article.id}.json`);
     fs.writeFileSync(articlePath, JSON.stringify(article, null, 2));
-
+  
     res.status(201).json(article);
-});
+  });
 
 // Delete an article
 app.delete('/articles/:id', (req, res) => {

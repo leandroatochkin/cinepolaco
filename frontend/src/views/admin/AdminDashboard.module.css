@@ -1,0 +1,11 @@
+.titleContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.topInputContainer{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}

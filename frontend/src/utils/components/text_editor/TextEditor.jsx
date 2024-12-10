@@ -17,25 +17,16 @@ import {
   UnorderedListButton
 } from '@draft-js-plugins/buttons';
 import '@draft-js-plugins/static-toolbar/lib/plugin.css';
-import draftToHtml from 'draftjs-to-html';
-import { convertToRaw } from 'draft-js';
+
 
 const toolbarPlugin = createToolbarPlugin();
 const imagePlugin = createImagePlugin();
 const { Toolbar } = toolbarPlugin;
 const plugins = [toolbarPlugin, imagePlugin];
 
-const RichTextEditor = () => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+const RichTextEditor = ({editorState, handleEditorChange}) => {
 
-  const handleEditorChange = (newState) => {
-    setEditorState(newState);
-    // Debugging: Check the editor content after a change
-    const contentState = newState.getCurrentContent();
-    console.log('Editor content after change:', draftToHtml(convertToRaw(contentState)));
-};
+  
 
   return (
     <div style={{ padding: '20px' }}>

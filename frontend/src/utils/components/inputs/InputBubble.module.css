@@ -1,0 +1,35 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    position: absolute;
+}
+
+.arrow{
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid darkslategray; 
+    
+}
+
+.bubble{
+    min-height: 50px;
+    height: auto;
+    min-width: 200px;
+    background-color: darkslategray;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 5%;
+
+}
+
+.input{
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 0;
+}
