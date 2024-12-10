@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const cors = require('cors')
+const uuid = require('uuid')
 
 const app = express();
 const PORT = 3001;
@@ -65,13 +66,16 @@ app.get('/articles', (req, res) => {
 
 // Upload a new article with image
 app.post('/articles', upload.single('image'), (req, res) => {
-    const { title, content } = req.body;
-    if (!title || !content) return res.status(400).send('Title and content are required.');
+    console.log("Received file:", req.file);  // Debugging the image
+    const { title, content, category, date } = req.body;
+    if (!title || !content || !category || !date) return res.status(400).send('Title and content are required.');
 
     const article = {
-        id: Date.now(),
+        id: uuid(),
         title,
         content,
+        category,
+        date,
         image: req.file ? `/images/${req.file.filename}` : null
     };
 
