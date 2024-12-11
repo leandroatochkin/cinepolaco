@@ -10,7 +10,7 @@ const PORT = 3001;
 
 
 const allowedOrigins = [
-    'http://localhost:5174',
+    'http://localhost:5173',
 ];
 
 app.use(cors({
@@ -66,11 +66,12 @@ app.get('/articles', (req, res) => {
 
 // Upload a new article with image
 app.post('/articles', upload.array('images'), (req, res) => {
-    console.log('Body:', req.body);
-    console.log('Files:', req.files);
+    console.log('Body:', req.body); // Logs the fields
+    console.log('Files:', req.files); // Logs the uploaded files
   
     const { title, content, category, date, comments } = req.body;
   
+    // Validate required fields
     if (!title || !content || !category || !date) {
       return res.status(400).send('Title, content, category, and date are required.');
     }
@@ -78,14 +79,14 @@ app.post('/articles', upload.array('images'), (req, res) => {
     // Ensure comments is an array
     const commentsArray = Array.isArray(comments) ? comments : [comments];
   
-    // Map files to their comments
+    // Map files to their respective comments
     const images = req.files.map((file, index) => ({
       file: `/images/${file.filename}`,
-      comment: commentsArray[index] || '',
+      comment: commentsArray[index] || '', // Use the corresponding comment or an empty string
     }));
   
     const article = {
-      id: uuid(),
+      id: uuidv4(),
       title,
       content,
       category,
@@ -93,12 +94,15 @@ app.post('/articles', upload.array('images'), (req, res) => {
       images, // Array of images with comments
     };
   
+    // Save the article to a file (or database, if necessary)
     const articlePath = path.join(articlesPath, `${article.id}.json`);
     fs.writeFileSync(articlePath, JSON.stringify(article, null, 2));
   
+    // Respond with the created article
     res.status(201).json(article);
   });
-
+  
+  
 // Delete an article
 app.delete('/articles/:id', (req, res) => {
     const articleFile = path.join(articlesPath, `${req.params.id}.json`);

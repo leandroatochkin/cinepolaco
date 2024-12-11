@@ -3,6 +3,7 @@ import axios from 'axios';
 import { uiStore } from '../../utils/stores/uiStore';
 import style from './Articles.module.css';
 import DOMPurify from 'dompurify'; // Install DOMPurify for sanitizing HTML
+import { Carousel } from '../../utils/components';
 
 const Articles = ({ category }) => {
   const [articles, setArticles] = useState([]);
@@ -16,16 +17,22 @@ const Articles = ({ category }) => {
       .catch((error) => console.error('Error fetching articles:', error));
   }, []);
 
+  useEffect(() => {
+   console.log(articles)
+  }, [articles]);
+
   return (
-    <div style={{ padding: '20px' }}>
+    <div className={style.container}>
+      
       {articles
         .filter((article) => article.category === category)
         .map((article) => (
           <div key={article.id} style={{ marginBottom: '20px' }}>
             <h2 className={style.h2}>{article.title}</h2>
+            <Carousel images={article.images}/>
             <div
               className={style.p}
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }} // Render enriched text safely
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
             />
             {article.images &&
               article.images.map((image, index) => (

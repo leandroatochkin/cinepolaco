@@ -20,6 +20,7 @@ const AdminDashboard = () => {
     images: [], // Array for multiple images with comments
   });
   const [openComments, setOpenComments] = useState(null)
+  const [expandText, setExpandText] = useState(null)
 
   const language = uiStore((state) => state.language);
 
@@ -63,26 +64,33 @@ const AdminDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const data = new FormData();
     data.append('date', formData.date);
     data.append('title', formData.title);
     data.append('category', formData.category);
-    data.append('content', draftToHtml(convertToRaw(editorState.getCurrentContent()))); // Convert editor content to HTML
-
-    // Append each image and its comment
-    formData.images.forEach((imageObj, idx) => {
-      data.append(`images[${idx}][file]`, imageObj.file); // Append file
-      data.append(`images[${idx}][comment]`, imageObj.comment); // Append comment
+    data.append(
+      'content',
+      draftToHtml(convertToRaw(editorState.getCurrentContent()))
+    ); // Convert editor content to HTML
+  
+    // Append each image
+    formData.images.forEach((imageObj) => {
+      data.append('images', imageObj.file); // Use 'images' field for all files
     });
-
+  
+    // Append each comment
+    formData.images.forEach((imageObj) => {
+      data.append('comments', imageObj.comment); // Use 'comments' field for all comments
+    });
+  
     try {
       const response = await axios.post(`http://localhost:3001/articles`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       console.log(response.data);
       alert('Article added successfully!');
       setFormData({ title: '', category: '', date: '', images: [] }); // Clear form
@@ -93,6 +101,7 @@ const AdminDashboard = () => {
       alert('Failed to add article');
     }
   };
+  
 
   const handleDelete = async (id) => {
     try {
@@ -104,18 +113,17 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleOpenComments = (index) => {
-    setOpenComments((prevIndex) => (prevIndex === index ? null : index))
-  }
-
   return (
-    <div style={{ padding: '20px' }}>
+    <div className={style.container}>
       <div className={style.titleContainer}>
+      <img src='/public/coat.png' className={style.coat}/>
         <h1>{language.ui.admin_dashboard}</h1>
+        <img src='/public/coat.png' className={style.coat}/>
       </div>
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-        <div style={{ border: '2px solid gray', padding: '1%', borderRadius: '16px' }}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }} className={style.form}>
+        <div className={style.formTop}>
           <div className={style.topInputContainer}>
+            <div style={{display: 'flex', gap: '5%'}}>
             <label>{language.ui.article_date}:</label>
             <input
               type="text"
@@ -126,6 +134,24 @@ const AdminDashboard = () => {
               placeholder="DD-MM-AAAA"
               style={{ width: '25%' }}
             />
+            <div>
+          <label>{language.ui.article_category}:</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          >
+            <option value="cinema">{language.ui.categories.cinema}</option>
+            <option value="community">{language.ui.categories.community}</option>
+            <option value="contests">{language.ui.categories.contests}</option>
+            <option value="country">{language.ui.categories.country}</option>
+            <option value="displays">{language.ui.categories.displays}</option>
+            <option value="news">{language.ui.categories.news}</option>
+            <option value="people">{language.ui.categories.people}</option>
+            <option value="workshops">{language.ui.categories.workshops}</option>
+          </select>
+        </div>
+            </div>
             <label>{language.ui.article_title}:</label>
             <input
               type="text"
@@ -140,9 +166,9 @@ const AdminDashboard = () => {
             <TextEditor editorState={editorState} handleEditorChange={handleEditorChange} />
           </div>
         </div>
-        <div style={{ border: '2px solid gray', padding: '1%', borderRadius: '16px', marginTop: '2%' }}>
-          <label>{language.ui.article_images}:</label>
-          <input type="file" multiple onChange={handleFileChange} />
+        <div  className={style.formBottom}>
+          <label>{language.ui.article_image}: </label>
+          <input type="file" name="images" multiple onChange={handleFileChange} />
           {formData.images.length > 0 && (
             <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'row', gap: '10px', flexWrap: 'wrap' }}>
               {formData.images.map((imageObj, index) => (
@@ -168,7 +194,8 @@ const AdminDashboard = () => {
                     right={'2%'}
                   />
                   {openComments === index && 
-                  <InputBubble 
+                  <InputBubble
+                  name={'comments'} 
                   type={'text'} 
                   placeholder={''} 
                   value={imageObj.comment} 
@@ -180,50 +207,45 @@ const AdminDashboard = () => {
             </div>
           )}
         </div>
-        <div>
-          <label>{language.ui.article_category}:</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-          >
-            <option value="cinema">{language.ui.categories.cinema}</option>
-            <option value="community">{language.ui.categories.community}</option>
-            <option value="contests">{language.ui.categories.contests}</option>
-            <option value="country">{language.ui.categories.country}</option>
-            <option value="displays">{language.ui.categories.displays}</option>
-            <option value="news">{language.ui.categories.news}</option>
-            <option value="people">{language.ui.categories.people}</option>
-            <option value="workshops">{language.ui.categories.workshops}</option>
-          </select>
-        </div>
-        <button type="submit">{language.ui.add_article}</button>
+        <button type="submit" className={style.submitButton}>{language.ui.add_article}</button>
       </form>
-
+          <div className={style.existingArticle}>
       <h2>{language.ui.existing_articles}</h2>
-      {articles.map((article) => (
-        <div key={article.id} style={{ marginBottom: '20px' }}>
+      {articles.map((article, index) => (
+        
+        <div key={article.id} >
+            
           <h3>{article.title}</h3>
-          <div
+        <div className={style.existingArticleTextContainer}>
+        <div
             className={style.p}
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          />
+            dangerouslySetInnerHTML={{ __html: expandText === index ? article.content : article.content.slice(0,40) + '...' }}
+          >
+        </div>
+        <button onClick={expandText === null ? ()=>{setExpandText(index)} : ()=>{setExpandText(null)}} className={style.expandButton}>
+            {expandText === null ? language.ui.see_more : language.ui.see_less}
+        </button>
+        </div>
+          <div  className={style.existingArticleImagesContainer}>
           {article.images &&
             article.images.map((image, index) => (
-              <div key={index} style={{ marginTop: '10px' }}>
+              <div key={index}  className={style.existingArticleImageContent}style={{ marginTop: '10px' }}>
                 <img
                   src={`http://localhost:3001${image.file}`} // Ensure `image.file` contains the correct path
                   alt={`${article.title} - ${index}`}
-                  style={{ maxWidth: '100%' }}
+                  className={style.existingArticleImage}
                 />
-                <p>{image.comment}</p>
+                <p className={style.existingArticleImageComment}>{image.comment}</p>
               </div>
             ))}
+          </div>
           <Button handler={() => handleDelete(article.id)} text={language.ui.delete} />
         </div>
       ))}
     </div>
+    </div>
   );
+  
 };
 
 export default AdminDashboard;

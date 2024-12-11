@@ -19,7 +19,9 @@ ui:{
     article_image: 'Fotos',
     add_article: 'Agregar artículo',
     existing_articles: 'Artículos existentes',
-    delete: 'borrar'
+    delete: 'borrar',
+    see_more: 'ver más',
+    see_less: 'ver menos'
 }
 }
 
