@@ -19,6 +19,7 @@ import {
 import '@draft-js-plugins/static-toolbar/lib/plugin.css';
 
 
+
 const toolbarPlugin = createToolbarPlugin();
 const imagePlugin = createImagePlugin();
 const { Toolbar } = toolbarPlugin;
@@ -36,7 +37,7 @@ const RichTextEditor = ({editorState, handleEditorChange}) => {
           onChange={handleEditorChange}
           plugins={plugins}
         />
-        <Toolbar>
+        <Toolbar >
           {(externalProps) => (
             <>
               <BoldButton {...externalProps} />

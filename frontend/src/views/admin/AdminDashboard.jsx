@@ -133,6 +133,7 @@ const AdminDashboard = () => {
               required
               placeholder="DD-MM-AAAA"
               style={{ width: '25%' }}
+              className={style.input}
             />
             <div>
           <label>{language.ui.article_category}:</label>
@@ -140,6 +141,7 @@ const AdminDashboard = () => {
             name="category"
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            className={style.select}
           >
             <option value="cinema">{language.ui.categories.cinema}</option>
             <option value="community">{language.ui.categories.community}</option>
@@ -159,9 +161,10 @@ const AdminDashboard = () => {
               value={formData.title}
               onChange={handleInputChange}
               required
+              className={style.input}
             />
           </div>
-          <div>
+          <div className={style.editor}>
             <label>{language.ui.article_text}:</label>
             <TextEditor editorState={editorState} handleEditorChange={handleEditorChange} />
           </div>

@@ -4,6 +4,7 @@ import { sp_text } from "../text";
 export const uiStore = create((set) => ({
     language: sp_text,
     currentCategory: 'news',
+    openModal: false,
   
     
     // Function to log in and set the user ID
@@ -13,5 +14,7 @@ export const uiStore = create((set) => ({
     setCurrentCategory: (category) => set({
         currentCategory: category
     }),
-
+    setOpenModal: (status) => set({
+        openModal: status
+        }),
   }));

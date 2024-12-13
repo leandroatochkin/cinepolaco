@@ -10,9 +10,9 @@ const currentCategory = uiStore((state)=>state.currentCategory)
   return (
     <div className={style.home}>
         <Navbar />
-        <div>
+    
         <Articles category={currentCategory}/>
-        </div>
+
     </div>
   )
 }

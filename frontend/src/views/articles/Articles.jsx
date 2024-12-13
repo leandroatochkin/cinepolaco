@@ -29,7 +29,7 @@ const Articles = ({ category }) => {
         .map((article) => (
           <div key={article.id} style={{ marginBottom: '20px' }}>
             <h2 className={style.h2}>{article.title}</h2>
-            <Carousel images={article.images}/>
+            <Carousel images={article.images} screen={'mobile'}/>
             <div
               className={style.p}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}

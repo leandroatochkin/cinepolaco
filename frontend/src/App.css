@@ -17,6 +17,9 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+.t16lpgj{
+  font-size: 6rem;
+}
 
 @keyframes logo-spin {
   from {
