@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -25,6 +26,9 @@ const AdminDashboard = () => {
 
   const language = uiStore((state) => state.language);
   const loggedIn = userStore((state) => state.loggedIn)
+  const setLoggedIn = userStore((state) => state.setLoggedIn)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchArticles(setArticles);
@@ -115,14 +119,19 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleExit = () => {
+    confirm(language.ui.exit_prompt) ? navigate('/login') : null
+  }
+
   return (
     <div className={style.container}>
 {loggedIn ? (
   <>
   <div className={style.titleContainer}>
-        <img src='/public/coat.png' className={style.coat}/>
+          <img src='/public/coat.png' className={style.coat}/>
           <h1>{language.ui.admin_dashboard}</h1>
           <img src='/public/coat.png' className={style.coat}/>
+          <Button handler={handleExit} text={language.ui.exit} />
         </div>
         <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }} className={style.form}>
           <div className={style.formTop}>

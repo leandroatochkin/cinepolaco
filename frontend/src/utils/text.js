@@ -21,7 +21,10 @@ ui:{
     existing_articles: 'Artículos existentes',
     delete: 'borrar',
     see_more: 'ver más',
-    see_less: 'ver menos'
+    see_less: 'ver menos',
+    exit_prompt: '¿Esta seguro que quiere salir?',
+    exit: 'salir',
+    cancel: 'cancelar'
 }
 }
 

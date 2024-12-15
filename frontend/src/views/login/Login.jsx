@@ -40,6 +40,7 @@ const setLoggedIn = userStore((state)=>state.setLoggedIn)
                 navigate('/admin')
             } else {
                 alert('Invalid username or password')
+                setLoading(false)
             }
         }
         catch(e){
@@ -58,7 +59,7 @@ const setLoggedIn = userStore((state)=>state.setLoggedIn)
     
             {/* Show loader while the login process is happening */}
             {loading ? (
-                <MoonLoader />
+                <MoonLoader color='white'/>
             ):(
                               <div className={style.formContainer} aria-label="Google login button container">
                 

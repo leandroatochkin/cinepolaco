@@ -20,21 +20,21 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: #022F40;
+        background: rgb(220,20,60);
     }
  
     .login{
         background-color: transparent;
         backdrop-filter: blur(20px);
-        background: #022F40;
+        background: rgb(220,20,60);
         border-radius: 16px;
         padding: 1%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        box-shadow:  -20px -20px 60px #022836,
-                    20px 20px 60px #02364a; 
+        box-shadow:  20px 20px 60px #bb1133,
+             -20px -20px 60px #fd1745;
         width: 50%;
         height: 90vh;            
     }
