@@ -5,6 +5,7 @@ export const uiStore = create((set) => ({
     language: sp_text,
     currentCategory: 'news',
     openModal: false,
+    loading: false,
   
     
     // Function to log in and set the user ID
@@ -17,4 +18,7 @@ export const uiStore = create((set) => ({
     setOpenModal: (status) => set({
         openModal: status
         }),
+    setLoading: (status) => set({
+            loading: status
+            }),
   }));

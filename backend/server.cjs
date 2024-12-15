@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -7,6 +8,9 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = 3001;
+
+const admin = process.env.ADMIN_USER
+const storedPassword = process.env.ADMIN_PASSWORD
 
 
 const allowedOrigins = [
@@ -101,7 +105,19 @@ app.post('/articles', upload.array('images'), (req, res) => {
     // Respond with the created article
     res.status(201).json(article);
   });
-  
+
+app.post('/login', (req, res)=>{
+    const {username, password} = req.body;
+    if(!username || !password){
+        throw new Error('username and password are required')
+    }
+    if(username !== admin || password !== storedPassword){
+        return res.status(200).json({valid: false})
+    }
+
+    return res.status(200).json({valid: true})
+    
+})
   
 // Delete an article
 app.delete('/articles/:id', (req, res) => {

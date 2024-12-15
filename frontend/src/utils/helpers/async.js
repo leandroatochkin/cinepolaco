@@ -18,3 +18,13 @@ export const fetchArticles = async (stateSetter) => {
         console.error('Error deleting article:', error);
       }
   }
+
+export const login = async (username, password)=>{
+  const payload = {username, password}
+  try{
+    const response = await axios.post(`${api.login}`, payload)
+    return response.data
+  }catch(e){
+    console.error('Login went wrong')
+  }
+}

@@ -34,19 +34,22 @@ const Articles = ({ category }) => {
               className={style.p}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
             />
+            <div className={style.bottomImagesContainer}>
             {article.images &&
               article.images.map((image, index) => (
-                <div key={index} style={{ marginTop: '10px' }}>
+                <div key={index}>
                   <img
                     src={`http://localhost:3001${image.file}`}
                     alt={`${article.title} - ${index}`}
                     style={{ maxWidth: '100%' }}
+                    className={style.gridItem}
                   />
-                  <p>{image.comment}</p>
                 </div>
               ))}
+              </div>
           </div>
         ))}
+        
     </div>
   );
 };
