@@ -5,14 +5,11 @@ import { uiStore } from '../../stores/uiStore';
 import { BackArrow } from '../../icons';
 import { useSwipeable } from 'react-swipeable';
 
-const ImageModal = ({ images, openingImage }) => {
+const ImageModal = ({ setImages, images, openingImage }) => {
   const [currentImage, setCurrentImage] = useState(openingImage);
 
   const setOpenModal = uiStore((state) => state.setOpenModal);
 
-  useEffect(() => {
-    console.log(images);
-  }, [currentImage, images]);
 
   const handleNextImage = () => {
     setCurrentImage((prevIndex) => 
@@ -34,10 +31,18 @@ const ImageModal = ({ images, openingImage }) => {
     trackMouse: true, // Enables swipe detection with a mouse for desktop users
   });
   
+
+  const handleClose = () => {
+    setOpenModal(false)
+    setCurrentImage(null)
+    setImages([])
+  }
+
   return (
     <Backdrop>
       <div className={style.container}>
-      <button onClick={()=>setOpenModal(false)} className={style.closeButton}>x</button>
+      <button onClick={handleClose} 
+      className={style.closeButton}>x</button>
         {images.length > 0 && (
           <img
             src={`http://localhost:3001${images[currentImage]?.file}`}

@@ -24,7 +24,8 @@ ui:{
     see_less: 'ver menos',
     exit_prompt: '¿Esta seguro que quiere salir?',
     exit: 'salir',
-    cancel: 'cancelar'
+    cancel: 'cancelar',
+    expand: 'agrandar'
 }
 }
 

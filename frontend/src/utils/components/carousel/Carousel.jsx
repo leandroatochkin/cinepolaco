@@ -5,7 +5,7 @@ import { uiStore } from '../../stores/uiStore';
 
 
 
-const Carousel = ({ screen, images, text, link, disabled }) => {
+const Carousel = ({ setImages, screen, images, text, link, disabled }) => {
   const [currentPic, setCurrentPic] = useState(0);
   const [isSliding, setIsSliding] = useState(false); // Controls the sliding animation
   const [displayPic, setDisplayPic] = useState(0); // The image to be displayed
@@ -32,7 +32,7 @@ const Carousel = ({ screen, images, text, link, disabled }) => {
   return (
 
     <div className={style.container}>
-    {openModal && <ImageModal images={images} openingImage={displayPic}/>}
+    {openModal && <ImageModal setImages={setImages} images={images} openingImage={displayPic}/>}
         <div className={screen === 'mobile' ? style.mobileCard : style.desktopCard}>
       <div
         className={`${style.imageContainer} ${isSliding ? style.sliding : ''}`}
