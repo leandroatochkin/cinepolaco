@@ -11,6 +11,8 @@ const Gallery = ({images, setImages}) => {
     const setOpenModal = uiStore((state)=>state.setOpenModal)
 
   return (
+    <>
+    <h2 style={{color: '#212427'}}>{language.ui.gallery}</h2>
     <div className={style.bottomImagesContainer}>
               {images &&
                 images.map((image, index) => (
@@ -21,14 +23,15 @@ const Gallery = ({images, setImages}) => {
                     }`}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
+                    onClick={() => {
+                        setOpenModal(true);
+                        setImages(images);
+                      }}
                   >
                     {hoveredIndex === index && (
                       <div
                         className={style.overlay}
-                        onClick={() => {
-                          setOpenModal(true);
-                          setImages(images);
-                        }}
+                       
                       >
                         <MagnifyingGlass />
                         <p>{language.ui.expand}</p>
@@ -37,12 +40,13 @@ const Gallery = ({images, setImages}) => {
                     <img
                       src={`${host}${image.file}`}
                       alt={`image - ${index}`}
-                      style={{ maxWidth: '100%' }}
+                      style={{ maxWidth: '100%', maxHeight: '100%' }}
                       className={style.gridItem}
                     />
                   </div>
                 ))}
             </div>
+    </>
   )
 }
 

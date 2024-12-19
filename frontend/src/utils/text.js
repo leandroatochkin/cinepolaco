@@ -25,7 +25,8 @@ ui:{
     exit_prompt: '¿Esta seguro que quiere salir?',
     exit: 'salir',
     cancel: 'cancelar',
-    expand: 'agrandar'
+    expand: 'agrandar',
+    gallery: 'Galería de imágenes'
 }
 }
 

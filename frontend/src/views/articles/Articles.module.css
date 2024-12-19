@@ -12,37 +12,14 @@
     overflow-y: scroll;
     height: 100vh;
     width: 100vw;
-    padding: 1%;
+    padding-left: 1%;
     scrollbar-width: none;
-}
 
-.bottomImagesContainer{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Dynamic grid columns */
-    grid-auto-rows: 100px; /* Each row has a uniform height */
-    grid-gap: 10px; /* Space between grid items */
-    grid-auto-flow: dense; /* Fill gaps with smaller items */
 }
 
 
-.gridItem {
-    object-fit: cover; /* Ensure the images maintain aspect ratio */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-
-  .largeItem {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
 
 
-
-.gridItemContainer{
-    position: relative;
-    width: 100%;
-  height: auto; /* Adapt to the content, i.e., the image */
-}
 
 .date{
     color: black;
@@ -54,23 +31,7 @@
     justify-content: space-between;
 }
 
-.overlay{
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: opacity 0.3s ease;
-}
 
-.gridItemContainer:hover .overlay {
-    opacity: 1; /* Show on hover */
-  }
 
   @media only screen and (min-width: 666px) and (max-height: 420px){
     .h2{
@@ -92,19 +53,7 @@
         flex-direction: column;
         align-items: center;
     }
-    
-    .bottomImagesContainer{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: auto;
-    }
-    
-    .gridItem {
-        width: 100%;
-        object-fit: cover; /* Ensure the images maintain aspect ratio */
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
+
   }
 
   @media only screen and (min-width: 666px) and (min-height: 421px) and (max-height: 1080px){
@@ -128,24 +77,6 @@
         padding: 0;
     }
     
-    .bottomImagesContainer{
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: auto;
-        gap: 0;
-        padding-bottom: 15%;
-    }
-    
-    .gridItem {
-        width: 100%;
-        object-fit:fill; /* Ensure the images maintain aspect ratio */
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
       
 
   }

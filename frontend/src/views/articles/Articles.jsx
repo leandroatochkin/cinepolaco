@@ -45,38 +45,6 @@ const Articles = ({ category }) => {
                 __html: DOMPurify.sanitize(article.content),
               }}
             />
-            {/* <div className={style.bottomImagesContainer}>
-              {article.images &&
-                article.images.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`${style.gridItemContainer} ${
-                      index === 0 ? style.largeItem : ''
-                    }`}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    {hoveredIndex === index && (
-                      <div
-                        className={style.overlay}
-                        onClick={() => {
-                          setOpenModal(true);
-                          setImages(article.images);
-                        }}
-                      >
-                        <MagnifyingGlass />
-                        <p>{language.ui.expand}</p>
-                      </div>
-                    )}
-                    <img
-                      src={`http://localhost:3001${image.file}`}
-                      alt={`${article.title} - ${index}`}
-                      style={{ maxWidth: '100%' }}
-                      className={style.gridItem}
-                    />
-                  </div>
-                ))}
-            </div> */}
             <Gallery images={article.images} setImages={setImages}/>
           </div>
         ))}
