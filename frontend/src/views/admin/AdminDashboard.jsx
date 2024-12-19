@@ -14,12 +14,14 @@ import style from './AdminDashboard.module.css';
 const AdminDashboard = () => {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const [articles, setArticles] = useState([]);
+  const [video, setVideo] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     content: '',
     category: '',
     date: '',
-    images: [], // Array for multiple images with comments
+    images: [],
+    videos: []
   });
   const [openComments, setOpenComments] = useState(null)
   const [expandText, setExpandText] = useState(null)
@@ -29,6 +31,10 @@ const AdminDashboard = () => {
   const setLoggedIn = userStore((state) => state.setLoggedIn)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
     fetchArticles(setArticles);
@@ -44,7 +50,27 @@ const AdminDashboard = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFileChange = (e) => {
+  const handleVideoChange = (e) => {
+    const value = e.target.value;
+    setVideo(value)
+  };
+
+  const handleAddVideo = () => {
+    if (video) {
+      setFormData((prev) => ({ ...prev, videos: [...prev.videos, video] }));
+      setVideo('')
+    }
+    
+  }
+
+  const handleRemoveVideo = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      videos: prev.videos.filter((_, i) => i !== index), // Remove the video at the specified index
+    }));
+  }
+
+  const handleFileChange = (e) => { 
     const files = Array.from(e.target.files);
     const imagesWithComments = files.map((file) => ({ file, comment: '' }));
     setFormData((prev) => ({
@@ -223,6 +249,40 @@ const AdminDashboard = () => {
               </div>
             )}
           </div>
+          {/*---------------------------------------VIDEO--------------------------------------*/}
+      <div className={style.formAddVideo}>
+            <div className={style.formAddInput}>
+            <input
+                type="text"
+                name="videos"
+                onChange={handleVideoChange}
+                value={video}
+                placeholder="insertar iframe"
+                style={{ width: '25%' }}
+                className={style.input}
+              />
+            <button onClick={handleAddVideo}>{language.ui.add_video}</button>
+            <div>
+        <h3>{language.ui.added_videos}</h3>
+        <ul>
+          {formData.videos.map((vid, index) => (
+            <li key={index}><a href={vid.slice(38, vid.length - 229)} target='_blank' rel='noopener noreferrer'>{vid.slice(38, vid.length - 229)}</a>
+            <button onClick={()=>handleRemoveVideo(index)}>{language.ui.delete}</button>
+            </li>
+            
+          ))}
+        </ul>
+      </div>
+            </div>
+            <div className={style.formAddInstructions}>
+              <h3>{language.ui.embed_video_title}</h3>
+              {language.ui.embed_video_text.split('\n').map((line, index) => (
+              <p key={index}>{line}</p>
+              ))}
+            </div>
+      </div>
+          
+          {/*-----------------------------------------------------------------------------*/}
           <button type="submit" className={style.submitButton}>{language.ui.add_article}</button>
         </form>
             <div className={style.existingArticle}>

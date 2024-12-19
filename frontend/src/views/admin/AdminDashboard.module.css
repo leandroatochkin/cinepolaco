@@ -96,3 +96,27 @@ overflow-x: scroll;
     padding: 0;
     background-color: rgba(0,0,0,0.3);
 }
+
+.formAddVideo{
+    border: 2px solid gray; 
+    padding: 1%; 
+    border-radius: 16px;
+     margin-top: 2%;
+     background-color: #212427;
+     display: flex;
+}
+
+.formAddInput{
+    width: 65%;
+}
+
+.formAddInstructions{
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    word-wrap: break-word;
+    background-color: darkslategray;
+    padding: 0.5%;
+    border-radius: 16px;
+    border: 2px solid gray;
+}
