@@ -1,0 +1,45 @@
+.gridDesigner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .colorPicker {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .colorButton {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    cursor: pointer;
+  }
+  
+  .colorButton.selected {
+    border: 3px solid #000;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1px;
+    background-color: #ccc;
+  }
+  
+  .gridRow {
+    display: flex;
+  }
+  
+  .gridCell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 1rem;
+  }
+  

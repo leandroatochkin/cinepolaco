@@ -30,7 +30,14 @@ ui:{
     add_video: 'agregar video',
     added_videos: 'videos agregados',
     embed_video_title: 'instrucciones para agregar video',
-    embed_video_text: "1-Hacer click en 'compartir' en el video que desea agregar.\n2-Hacer click en 'insertar'.\n3-Hacer click en 'copiar' en la esquina inferior derecha.\n4-Pegar lo copiar en el campo indicado como 'insertar iframe'" 
+    embed_video_text: "1-Hacer click en 'compartir' en el video que desea agregar.\n2-Hacer click en 'insertar'.\n3-Hacer click en 'copiar' en la esquina inferior derecha.\n4-Pegar lo copiar en el campo indicado como 'insertar iframe'", 
+    text: 'Texto',
+    article_images: 'Fotos de artículo',
+    carousel: 'Carrusel',
+    videos: 'Videos',
+    references: 'Referencias',
+    select: 'seleccionar',
+
 }
 }
 

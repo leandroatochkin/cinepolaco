@@ -10,6 +10,7 @@ import { TextEditor, ButtonSmall, Button, InputBubble } from '../../utils/compon
 import { fetchArticles } from '../../utils/helpers/async';
 import { Trashcan, Comment } from '../../utils/icons';
 import style from './AdminDashboard.module.css';
+import LayoutDesigner from '../../utils/components/layout_designer/LayoutDesigner';
 
 const AdminDashboard = () => {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
@@ -21,10 +22,17 @@ const AdminDashboard = () => {
     category: '',
     date: '',
     images: [],
-    videos: []
+    videos: [],
+    layout: 1,
+    articleImages: []
   });
   const [openComments, setOpenComments] = useState(null)
   const [expandText, setExpandText] = useState(null)
+  const [highlight, setHighlight] = useState(null)
+  const [showInputs, setShowInputs] = useState(0);
+  const [articleImage, setArticleImage] = useState(0)
+
+  const colors = ["red", "blue", "green", "yellow", "purple"];
 
   const language = uiStore((state) => state.language);
   const loggedIn = userStore((state) => state.loggedIn)
@@ -63,6 +71,20 @@ const AdminDashboard = () => {
     
   }
 
+  const handleArticleImageChange = (e) => {
+    const value = e.target.value;
+    setArticleImage(value - 1)
+  };
+
+  const handleAddArticleImage = () => {
+    if (articleImage) {
+      setFormData((prev) => ({ ...prev, articleImages: [...prev.articleImages, articleImage] }));
+      setArticleImage(0)
+    }
+    
+  }
+
+
   const handleRemoveVideo = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -94,6 +116,11 @@ const AdminDashboard = () => {
     }));
   };
 
+  const handleSelectLayout = (layout) => {
+    setFormData((prev) => ({ ...prev, layout }));
+    setHighlight(layout)
+    };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -123,7 +150,6 @@ const AdminDashboard = () => {
         },
       });
   
-      console.log(response.data);
       alert('Article added successfully!');
       setFormData({ title: '', category: '', date: '', images: [] }); // Clear form
       setEditorState(EditorState.createEmpty()); // Reset editor content
@@ -283,6 +309,75 @@ const AdminDashboard = () => {
       </div>
           
           {/*-----------------------------------------------------------------------------*/}
+
+          <div  className={style.formAddVideo}>
+                {/* <LayoutDesigner rows={6} cols={6} colors={colors}/> */}
+                <div className={style.formAddInstructions}>
+                  <div>
+                    <h3>{language.ui.references}</h3>
+                    <div className={style.referenceLine}>
+                    <div style={{backgroundColor: '#d24d5dff'}} className={style.layoutReference}></div><p>{language.ui.text}</p>
+                    </div>
+                   <div className={style.referenceLine}>
+                   <div style={{backgroundColor: '#4d4dd2ff'}} className={style.layoutReference}></div><p>{language.ui.article_images}</p>
+                   </div>
+                   <div className={style.referenceLine}>
+                   <div style={{backgroundColor: '#d2c74dff'}} className={style.layoutReference}></div><p>{language.ui.carousel}</p>
+                   </div>
+                  <div className={style.referenceLine}>
+                  <div style={{backgroundColor: '#4dd263ff'}} className={style.layoutReference}></div><p>{language.ui.videos}</p>
+                  </div>
+                  </div>
+                   {/* <h3>{language.ui.embed_video_title}</h3>
+                    {language.ui.embed_video_text.split('\n').map((line, index) => (
+                          <p key={index}>{line}</p>
+                     ))} */}
+            </div>
+                <div style={{display: 'flex', flexDirection: 'column', width: '65%'}}>
+                <div className={style.layoutButtonContainer}>
+                <button onClick={()=>{
+                  handleSelectLayout(0)
+                  setShowInputs(1)
+                }} style={highlight === 0 ? {border: '2px solid red'} : {}}><img src='/public/g5.png'/></button>
+                <button onClick={()=>{
+                  handleSelectLayout(1)
+                  setShowInputs(2)
+                  }} style={highlight === 1 ? {border: '2px solid red'} : {}}><img src='/public/g6.png'/></button>
+                <button onClick={()=>{
+                  handleSelectLayout(2)
+                  setShowInputs(0)
+                  }} style={highlight === 2 ? {border: '2px solid red'} : {}}><img src='/public/g7.png'/></button>
+                <button onClick={()=>{
+                  handleSelectLayout(3)
+                  setShowInputs(0)
+                  }} style={highlight === 3 ? {border: '2px solid red'} : {}}><img src='/public/g8.png'/></button>
+                <button onClick={()=>{
+                  handleSelectLayout(4)
+                  setShowInputs(0)
+                  }} style={highlight === 4 ? {border: '2px solid red'} : {}}><img src='/public/g9.png'/></button>
+                </div>
+                {showInputs !== 0 && 
+                <div className={style.formAddInputs}>
+                  {showInputs === 1 ? (
+                    <>
+                    <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/> <button onClick={handleAddArticleImage}>{language.ui.select}</button>
+                    </>
+                  )
+                :
+
+                (
+                  <>
+                  <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/><button onClick={handleAddArticleImage}>{language.ui.select}</button>
+                  <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/><button onClick={handleAddArticleImage}>{language.ui.select}</button>
+                  </>
+                )
+                }
+                  </div>}
+                </div>
+            </div>
+
+
+
           <button type="submit" className={style.submitButton}>{language.ui.add_article}</button>
         </form>
             <div className={style.existingArticle}>
