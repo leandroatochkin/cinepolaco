@@ -37,7 +37,12 @@ ui:{
     videos: 'Videos',
     references: 'Referencias',
     select: 'seleccionar',
-
+    max_images: 'máxima cantidad de imágenes: ',
+    layout_instructions_title: 'instrucciones para seleccionar formato',
+    layout_instructions_text: "1-Seleccionar el formato deseado teniendo en cuenta las referencias por color.\n2-Si seleccionó el formato 1 o 2, seleccionar las imágenes que se desean mostrar contando las imagenes que seleccionó anteriormente en el campo FOTOS, por ejemplo, si seleccionó tres fotos y desea que la primera se parte del artículo, ingrese '1'.",
+    layouts: 'formatos',
+    article_added: 'Artículo agregado exitosamente.',
+    article_deleted: 'Artículo eliminado exitosamente.',
 }
 }
 

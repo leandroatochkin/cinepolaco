@@ -11,6 +11,7 @@ import { fetchArticles } from '../../utils/helpers/async';
 import { Trashcan, Comment } from '../../utils/icons';
 import style from './AdminDashboard.module.css';
 import LayoutDesigner from '../../utils/components/layout_designer/LayoutDesigner';
+import { api } from '../../utils/api_index';
 
 const AdminDashboard = () => {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
@@ -23,7 +24,7 @@ const AdminDashboard = () => {
     date: '',
     images: [],
     videos: [],
-    layout: 1,
+    layout: 0,
     articleImages: []
   });
   const [openComments, setOpenComments] = useState(null)
@@ -84,7 +85,6 @@ const AdminDashboard = () => {
     
   }
 
-
   const handleRemoveVideo = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
     data.append(
       'content',
       draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    ); // Convert editor content to HTML
+    ); 
   
     // Append each image
     formData.images.forEach((imageObj) => {
@@ -142,16 +142,21 @@ const AdminDashboard = () => {
     formData.images.forEach((imageObj) => {
       data.append('comments', imageObj.comment); // Use 'comments' field for all comments
     });
+
+    data.append('videos',formData.videos);
+    data.append('videos',formData.layout);
+    data.append('videos',formData.articleImages);
+
   
     try {
-      const response = await axios.post(`http://localhost:3001/articles`, data, {
+      const response = await axios.post(api.get_articles, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
   
-      alert('Article added successfully!');
-      setFormData({ title: '', category: '', date: '', images: [] }); // Clear form
+      alert(language.ui.article_added);
+      setFormData({ title: '', category: '', date: '', images: [], videos: [], layout: 0, articleImages: [] }); // Clear form
       setEditorState(EditorState.createEmpty()); // Reset editor content
       fetchArticles(setArticles); // Refresh articles list
     } catch (error) {
@@ -163,8 +168,8 @@ const AdminDashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/articles/${id}`);
-      alert('Article deleted successfully!');
+      await axios.delete(`${api.get_articles}/${id}`);
+      alert(language.ui.article_deleted);
       fetchArticles(setArticles);
     } catch (error) {
       console.error('Error deleting article:', error);
@@ -183,11 +188,14 @@ const AdminDashboard = () => {
           <img src='/public/coat.png' className={style.coat}/>
           <h1>{language.ui.admin_dashboard}</h1>
           <img src='/public/coat.png' className={style.coat}/>
+          <div style={{marginRight: '5%'}}>
           <Button handler={handleExit} text={language.ui.exit} />
+          </div>
         </div>
         <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }} className={style.form}>
           <div className={style.formTop}>
             <div className={style.topInputContainer}>
+              <h2>{language.ui.text}</h2>
               <div style={{display: 'flex', gap: '5%'}}>
               <label>{language.ui.article_date}:</label>
               <input
@@ -235,6 +243,7 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div  className={style.formBottom}>
+          <h2>{language.ui.article_image}</h2>
             <label>{language.ui.article_image}: </label>
             <input type="file" name="images" multiple onChange={handleFileChange} />
             {formData.images.length > 0 && (
@@ -277,7 +286,9 @@ const AdminDashboard = () => {
           </div>
           {/*---------------------------------------VIDEO--------------------------------------*/}
       <div className={style.formAddVideo}>
+      
             <div className={style.formAddInput}>
+              <h2>{language.ui.videos}</h2>
             <input
                 type="text"
                 name="videos"
@@ -312,14 +323,14 @@ const AdminDashboard = () => {
 
           <div  className={style.formAddVideo}>
                 {/* <LayoutDesigner rows={6} cols={6} colors={colors}/> */}
-                <div className={style.formAddInstructions}>
-                  <div>
+                <div className={style.formLayoutInstructions}>
+                  <div style={{width: '50%'}}>
                     <h3>{language.ui.references}</h3>
                     <div className={style.referenceLine}>
                     <div style={{backgroundColor: '#d24d5dff'}} className={style.layoutReference}></div><p>{language.ui.text}</p>
                     </div>
                    <div className={style.referenceLine}>
-                   <div style={{backgroundColor: '#4d4dd2ff'}} className={style.layoutReference}></div><p>{language.ui.article_images}</p>
+                   <div style={{backgroundColor: '#4d4dd2ff', wordBreak: 'break-all'}} className={style.layoutReference}></div><p>{language.ui.article_images}</p>
                    </div>
                    <div className={style.referenceLine}>
                    <div style={{backgroundColor: '#d2c74dff'}} className={style.layoutReference}></div><p>{language.ui.carousel}</p>
@@ -328,51 +339,70 @@ const AdminDashboard = () => {
                   <div style={{backgroundColor: '#4dd263ff'}} className={style.layoutReference}></div><p>{language.ui.videos}</p>
                   </div>
                   </div>
+                  <div className={style.formLayoutInstructionsInner}>
+                    <h3>{language.ui.layout_instructions_title}</h3>
+                    {language.ui.layout_instructions_text.split('\n').map((line, index) => (
+              <p key={index}>{line}</p>
+              ))}
+                  </div>
                    {/* <h3>{language.ui.embed_video_title}</h3>
                     {language.ui.embed_video_text.split('\n').map((line, index) => (
                           <p key={index}>{line}</p>
                      ))} */}
             </div>
                 <div style={{display: 'flex', flexDirection: 'column', width: '65%'}}>
-                <div className={style.layoutButtonContainer}>
+               <fieldset style={{borderRadius: '16px'}}>
+                <legend>{language.ui.layouts}</legend>
+               <div className={style.layoutButtonContainer}>
                 <button onClick={()=>{
                   handleSelectLayout(0)
                   setShowInputs(1)
-                }} style={highlight === 0 ? {border: '2px solid red'} : {}}><img src='/public/g5.png'/></button>
+                }} 
+                style={highlight === 0 ? {border: '2px solid red'} : {}}
+                className={style.layoutButton}
+                ><img src='/public/g5.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(1)
                   setShowInputs(2)
-                  }} style={highlight === 1 ? {border: '2px solid red'} : {}}><img src='/public/g6.png'/></button>
+                  }} 
+                  style={highlight === 1 ? {border: '2px solid red'} : {}}
+                  className={style.layoutButton}
+                  ><img src='/public/g6.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(2)
                   setShowInputs(0)
-                  }} style={highlight === 2 ? {border: '2px solid red'} : {}}><img src='/public/g7.png'/></button>
+                  }} 
+                  style={highlight === 2 ? {border: '2px solid red'} : {}}
+                  className={style.layoutButton}
+                  ><img src='/public/g7.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(3)
                   setShowInputs(0)
-                  }} style={highlight === 3 ? {border: '2px solid red'} : {}}><img src='/public/g8.png'/></button>
+                  }} 
+                  style={highlight === 3 ? {border: '2px solid red'} : {}}
+                  className={style.layoutButton}
+                  ><img src='/public/g8.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(4)
                   setShowInputs(0)
-                  }} style={highlight === 4 ? {border: '2px solid red'} : {}}><img src='/public/g9.png'/></button>
+                  }} 
+                  style={highlight === 4 ? {border: '2px solid red'} : {}}
+                  className={style.layoutButton}
+                  ><img src='/public/g9.png'/></button>
                 </div>
+               </fieldset>
                 {showInputs !== 0 && 
                 <div className={style.formAddInputs}>
-                  {showInputs === 1 ? (
+                
                     <>
-                    <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/> <button onClick={handleAddArticleImage}>{language.ui.select}</button>
-                    </>
-                  )
-                :
+                    <h3>{language.ui.max_images}{showInputs === 1 ? '1' : '2'}</h3>
+                    <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange} disabled={showInputs === 1 && formData.articleImages.length === 1 || showInputs === 2 && formData.articleImages.length === 2}/>
+                    <button onClick={handleAddArticleImage}>{language.ui.select}</button>
 
-                (
-                  <>
-                  <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/><button onClick={handleAddArticleImage}>{language.ui.select}</button>
-                  <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange}/><button onClick={handleAddArticleImage}>{language.ui.select}</button>
-                  </>
-                )
+                    </>
+                  </div>    
                 }
-                  </div>}
+                  
                 </div>
             </div>
 
