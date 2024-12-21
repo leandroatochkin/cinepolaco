@@ -4,7 +4,6 @@ import { uiStore } from '../../utils/stores/uiStore';
 import style from './Articles.module.css';
 import DOMPurify from 'dompurify';
 import { Carousel, Gallery, VideoEmbed } from '../../utils/components';
-import { MagnifyingGlass } from '../../utils/icons';
 import ImageModal from '../../utils/components/modals/ImageModal';
 import { host } from '../../utils/api_index';
 import { splitTextAtClosestParagraph } from '../../utils/helpers/functions';
@@ -12,7 +11,6 @@ import { splitTextAtClosestParagraph } from '../../utils/helpers/functions';
 
 const Articles = ({ category }) => {
   const [articles, setArticles] = useState([]);
-  // const [hoveredIndex, setHoveredIndex] = useState(null);
   const [images, setImages] = useState([]);
   const language = uiStore((state) => state.language);
   const openModal = uiStore((state) => state.openModal);
@@ -26,7 +24,7 @@ const Articles = ({ category }) => {
       .catch((error) => console.error('Error fetching articles:', error));
   }, []);
 
-  useEffect(()=>{},[articles])
+
 
 
   return (
@@ -40,7 +38,7 @@ const Articles = ({ category }) => {
               <>
               <Header article={article}/>
               <Carousel setImages={setImages} images={article.images} screen='mobile'/>
-               <Layout1 content={article.content} imageRight={article.images[0]} imageLeft={article.images[1]} videos={article.videoArr}/>
+              <Layout1 content={article.content} imageRight={article.images[0]} imageLeft={article.images[1]} videos={article.videoArr} images={article.images} setImages={setImages} language={language}/>
               </>
             )}
           </div>
@@ -62,7 +60,7 @@ const Header = ({article}) => {
   )
 }
 
-const Layout1 = ({content, imageRight, imageLeft, videos}) => {
+const Layout1 = ({content, imageRight, imageLeft, videos, images, setImages, language}) => {
 
 const [firstColumn, secondColumn] = splitTextAtClosestParagraph(content)
 
@@ -83,10 +81,13 @@ const [firstColumn, secondColumn] = splitTextAtClosestParagraph(content)
                 right: '0',
                 width: '200px',
                 textAlign: 'center',
+                padding: '0.5%'
               }}>
-                <img src={`${host}${imageRight.file}`} alt="Image 1 description" style={{width: '100%', height: 'auto'}}/>
+                <img src={`${host}${imageRight.file}`} alt="Image 1 description" style={{width: '100%', height: 'auto', borderRadius: '4px'}}/>
                 <p style={{
-                  color: '#212427'
+                  color: '#212427',
+                  fontSize: '0.8rem',
+                  marginTop: '0'
                 }}>{imageRight.comment}</p>
               </aside>
               <p style={{
@@ -107,10 +108,14 @@ const [firstColumn, secondColumn] = splitTextAtClosestParagraph(content)
                 left: '0',
                 width: '200px',
                 textAlign: 'center',
+                padding: '0.5%'
               }}>
-                <img src={`${host}${imageLeft.file}`} alt="Image 2 description" style={{width: '100%', height: 'auto'}}/>
+                <img src={`${host}${imageLeft.file}`} alt="Image 2 description" style={{width: '100%', height: 'auto', borderRadius: '4px'}}/>
                 <p style={{
-                  color: '#212427'
+                  color: '#212427',
+                  fontSize: '0.8rem',
+                  marginTop: '0'
+
                 }}>{imageLeft.comment}</p>
               </aside>
                 
@@ -130,11 +135,25 @@ const [firstColumn, secondColumn] = splitTextAtClosestParagraph(content)
 
             </div>
           </div>
-          {/* {videos && videos.map((video, index)=>{
-            <div key={index}>
-              <VideoEmbed iframe={video[index]}/>
+          <div style={{marginTop: '10%'}}>
+          {videos && <h3 style={{color: '#212427'}}>{language.ui.related_videos}</h3>}
+          <div className={style.videoContainer}>
+          
+          {videos && videos.map((video,index)=>(
+            <div 
+            key={index} 
+            dangerouslySetInnerHTML={{__html: video[index]}}>
+              
             </div>
-          })} */}
+          ))}
+          </div>
+          </div>
+          
+          <div style={{
+            marginTop: '10%'
+          }}>
+          <Gallery images={images} setImages={setImages}/>
+          </div>
     </>
   )
 }

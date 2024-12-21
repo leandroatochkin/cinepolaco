@@ -43,6 +43,7 @@ ui:{
     layouts: 'formatos',
     article_added: 'Artículo agregado exitosamente.',
     article_deleted: 'Artículo eliminado exitosamente.',
+    related_videos: 'Videos relacionados',
 }
 }
 
