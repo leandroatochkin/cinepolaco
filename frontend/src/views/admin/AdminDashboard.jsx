@@ -153,11 +153,11 @@ const AdminDashboard = () => {
 
     
     data.append('layout',formData.layout);
-    // data.append('articleImages',formData.articleImages);
+
     formData.articleImages.forEach((image) => {
       data.append('articleImages', image); // Use 'images' field for all files
     });
-    // data.append('videos',formData.videos);
+
     formData.videos.forEach((video) => {
       data.append('videos', video); // Use 'images' field for all files
     });

@@ -7,6 +7,8 @@ import { Carousel, Gallery, VideoEmbed } from '../../utils/components';
 import { MagnifyingGlass } from '../../utils/icons';
 import ImageModal from '../../utils/components/modals/ImageModal';
 import { host } from '../../utils/api_index';
+import { splitTextAtClosestParagraph } from '../../utils/helpers/functions';
+
 
 const Articles = ({ category }) => {
   const [articles, setArticles] = useState([]);
@@ -61,8 +63,13 @@ const Header = ({article}) => {
 }
 
 const Layout1 = ({content, imageRight, imageLeft, videos}) => {
+
+const [firstColumn, secondColumn] = splitTextAtClosestParagraph(content)
+
+
   return(
     <>
+  
     <div style={{
       position: 'relative',
       margin: '20px'
@@ -70,17 +77,7 @@ const Layout1 = ({content, imageRight, imageLeft, videos}) => {
             <div style={{
               position: 'relative'
             }} aria-label="Dynamic Article Content">
-              <p style={{
-                lineHeight: '1.6',
-                clear: 'both',
-                color: '#212427'
-              }}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(content),
-              }}
-              ></p>
-              {/* Image at the beginning (right-aligned) */}
-              <div style={{
+              <aside style={{
                 float: 'right',
                 top: '0',
                 right: '0',
@@ -91,8 +88,19 @@ const Layout1 = ({content, imageRight, imageLeft, videos}) => {
                 <p style={{
                   color: '#212427'
                 }}>{imageRight.comment}</p>
-              </div>
-              {/* Image at the end (left-aligned) */}
+              </aside>
+              <p style={{
+                lineHeight: '1.6',
+                clear: '',
+                color: '#212427'
+              }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(firstColumn),
+              }}
+              ></p>
+              
+              
+
               <aside style={{
                 float: 'left',
                 bottom: '0',
@@ -105,6 +113,21 @@ const Layout1 = ({content, imageRight, imageLeft, videos}) => {
                   color: '#212427'
                 }}>{imageLeft.comment}</p>
               </aside>
+                
+              <p style={{
+                lineHeight: '1.6',
+                clear: '',
+                color: '#212427'
+              }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(secondColumn),
+              }}
+              ></p>
+
+              
+
+
+
             </div>
           </div>
           {/* {videos && videos.map((video, index)=>{
