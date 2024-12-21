@@ -73,7 +73,7 @@ app.post('/articles', upload.array('images'), (req, res) => {
     console.log('Body:', req.body); // Logs the fields
     console.log('Files:', req.files); // Logs the uploaded files
   
-    const { title, content, category, date, comments } = req.body;
+    const { title, content, category, date, comments, videos, layout, articleImages } = req.body;
   
     // Validate required fields
     if (!title || !content || !category || !date) {
@@ -88,7 +88,15 @@ app.post('/articles', upload.array('images'), (req, res) => {
       file: `/images/${file.filename}`,
       comment: commentsArray[index] || '', // Use the corresponding comment or an empty string
     }));
-  
+    
+    const videoArr = videos.map((video, index) => ({
+        [index]: video // Use the corresponding comment or an empty string
+      }));
+
+    const articleImageArr = articleImages.map((image, index) => ({
+        [index]: image // Use the corresponding comment or an empty string
+      }));
+    
     const article = {
       id: uuidv4(),
       title,
@@ -96,6 +104,10 @@ app.post('/articles', upload.array('images'), (req, res) => {
       category,
       date,
       images, // Array of images with comments
+      videoArr,
+      layout,
+      articleImageArr
+
     };
   
     // Save the article to a file (or database, if necessary)

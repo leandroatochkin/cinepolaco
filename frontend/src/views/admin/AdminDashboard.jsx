@@ -66,11 +66,14 @@ const AdminDashboard = () => {
 
   const handleAddVideo = () => {
     if (video) {
-      setFormData((prev) => ({ ...prev, videos: [...prev.videos, video] }));
-      setVideo('')
+      setFormData((prev) => ({
+        ...prev,
+        videos: prev.videos ? [...prev.videos, video] : [video], // Ensure videos is always an array
+      }));
+      setVideo('');
     }
-    
-  }
+  };
+  
 
   const handleArticleImageChange = (e) => {
     const value = e.target.value;
@@ -78,12 +81,17 @@ const AdminDashboard = () => {
   };
 
   const handleAddArticleImage = () => {
-    if (articleImage) {
-      setFormData((prev) => ({ ...prev, articleImages: [...prev.articleImages, articleImage] }));
-      setArticleImage(0)
+    if (typeof articleImage === "number" && articleImage >= 0) { 
+      setFormData((prev) => ({
+        ...prev,
+        articleImages: prev.articleImages 
+          ? [...prev.articleImages, articleImage] 
+          : [articleImage], // Ensure array initialization
+      }));
+      setArticleImage(0); // Reset articleImage to 0
     }
-    
-  }
+  };
+  
 
   const handleRemoveVideo = (index) => {
     setFormData((prev) => ({
@@ -143,9 +151,16 @@ const AdminDashboard = () => {
       data.append('comments', imageObj.comment); // Use 'comments' field for all comments
     });
 
-    data.append('videos',formData.videos);
-    data.append('videos',formData.layout);
-    data.append('videos',formData.articleImages);
+    
+    data.append('layout',formData.layout);
+    // data.append('articleImages',formData.articleImages);
+    formData.articleImages.forEach((image) => {
+      data.append('articleImages', image); // Use 'images' field for all files
+    });
+    // data.append('videos',formData.videos);
+    formData.videos.forEach((video) => {
+      data.append('videos', video); // Use 'images' field for all files
+    });
 
   
     try {
@@ -298,13 +313,13 @@ const AdminDashboard = () => {
                 style={{ width: '25%' }}
                 className={style.input}
               />
-            <button onClick={handleAddVideo}>{language.ui.add_video}</button>
+            <button onClick={handleAddVideo} type='button'>{language.ui.add_video}</button>
             <div>
         <h3>{language.ui.added_videos}</h3>
         <ul>
           {formData.videos.map((vid, index) => (
             <li key={index}><a href={vid.slice(38, vid.length - 229)} target='_blank' rel='noopener noreferrer'>{vid.slice(38, vid.length - 229)}</a>
-            <button onClick={()=>handleRemoveVideo(index)}>{language.ui.delete}</button>
+            <button onClick={()=>handleRemoveVideo(index)} type='button'>{language.ui.delete}</button>
             </li>
             
           ))}
@@ -322,7 +337,7 @@ const AdminDashboard = () => {
           {/*-----------------------------------------------------------------------------*/}
 
           <div  className={style.formAddVideo}>
-                {/* <LayoutDesigner rows={6} cols={6} colors={colors}/> */}
+
                 <div className={style.formLayoutInstructions}>
                   <div style={{width: '50%'}}>
                     <h3>{language.ui.references}</h3>
@@ -345,10 +360,7 @@ const AdminDashboard = () => {
               <p key={index}>{line}</p>
               ))}
                   </div>
-                   {/* <h3>{language.ui.embed_video_title}</h3>
-                    {language.ui.embed_video_text.split('\n').map((line, index) => (
-                          <p key={index}>{line}</p>
-                     ))} */}
+
             </div>
                 <div style={{display: 'flex', flexDirection: 'column', width: '65%'}}>
                <fieldset style={{borderRadius: '16px'}}>
@@ -360,6 +372,7 @@ const AdminDashboard = () => {
                 }} 
                 style={highlight === 0 ? {border: '2px solid red'} : {}}
                 className={style.layoutButton}
+                type='button'
                 ><img src='/public/g5.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(1)
@@ -367,6 +380,7 @@ const AdminDashboard = () => {
                   }} 
                   style={highlight === 1 ? {border: '2px solid red'} : {}}
                   className={style.layoutButton}
+                  type='button'
                   ><img src='/public/g6.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(2)
@@ -374,6 +388,7 @@ const AdminDashboard = () => {
                   }} 
                   style={highlight === 2 ? {border: '2px solid red'} : {}}
                   className={style.layoutButton}
+                  type='button'
                   ><img src='/public/g7.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(3)
@@ -381,6 +396,7 @@ const AdminDashboard = () => {
                   }} 
                   style={highlight === 3 ? {border: '2px solid red'} : {}}
                   className={style.layoutButton}
+                  type='button'
                   ><img src='/public/g8.png'/></button>
                 <button onClick={()=>{
                   handleSelectLayout(4)
@@ -388,6 +404,7 @@ const AdminDashboard = () => {
                   }} 
                   style={highlight === 4 ? {border: '2px solid red'} : {}}
                   className={style.layoutButton}
+                  type='button'
                   ><img src='/public/g9.png'/></button>
                 </div>
                </fieldset>
@@ -397,7 +414,7 @@ const AdminDashboard = () => {
                     <>
                     <h3>{language.ui.max_images}{showInputs === 1 ? '1' : '2'}</h3>
                     <input type="text" placeholder={language.ui.text} onChange={handleArticleImageChange} disabled={showInputs === 1 && formData.articleImages.length === 1 || showInputs === 2 && formData.articleImages.length === 2}/>
-                    <button onClick={handleAddArticleImage}>{language.ui.select}</button>
+                    <button onClick={handleAddArticleImage} type='button'>{language.ui.select}</button>
 
                     </>
                   </div>    

@@ -44,9 +44,14 @@ const Carousel = ({ setImages, screen, images, text, link, disabled }) => {
             className={style.image}
             style={{ backgroundImage: `url('http://localhost:3001${image.file}')`}}
           >
-            <div className={style.overlay}>
-                <p>{image.comment}</p>
-            </div>
+            {image.comment !== '' ? (
+              <div className={style.overlay}>
+              <p>{image.comment}</p>
+          </div>
+            )
+          :
+          null
+          }
           </div>
         ))}
       </div>

@@ -4,6 +4,7 @@
     align-items: center;
     height: auto;
     position: absolute;
+    
 }
 
 .arrow{
@@ -12,6 +13,7 @@
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
     border-bottom: 15px solid darkslategray; 
+    z-index: 999;
     
 }
 
@@ -25,7 +27,7 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 5%;
-
+    z-index: 999;   
 }
 
 .input{
