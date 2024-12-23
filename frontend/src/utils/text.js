@@ -44,6 +44,7 @@ ui:{
     article_added: 'Artículo agregado exitosamente.',
     article_deleted: 'Artículo eliminado exitosamente.',
     related_videos: 'Videos relacionados',
+    no_more_articles: 'No hay más artículos para mostrar.',
 }
 }
 

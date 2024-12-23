@@ -93,9 +93,12 @@ app.post('/articles', upload.array('images'), (req, res) => {
         [index]: video // Use the corresponding comment or an empty string
       }));
 
-    const articleImageArr = articleImages.map((image, index) => ({
-        [index]: image // Use the corresponding comment or an empty string
-      }));
+      const articleImageArr = Array.isArray(articleImages) && articleImages.length > 0 
+      ? articleImages.map((image, index) => ({
+          index, // Store the index as a key
+          image, // Store the image
+        }))
+      : [];
     
     const article = {
       id: uuidv4(),
