@@ -1,0 +1,49 @@
+/* Container to center the animation and ensure everything stays in view */
+.titleContainer {
+    margin-left: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 200px;
+    overflow: hidden; /* Ensures the text is hidden when off-screen */
+    position: relative;
+  }
+  
+  /* Base styles for the titles */
+  .title {
+    margin: 0;
+    font-size: 4rem;
+    font-weight: bold;
+    opacity: 0; /* Initially invisible */
+    transform: translateX(100%); /* Start off-screen to the right */
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    white-space: nowrap;
+    font-family: "Oswald", sans-serif;
+  }
+  
+  /* "CINE" animation */
+  .titleWord1 {
+    animation-name: slideIn;
+    animation-delay: 0s; /* Starts immediately */
+  }
+  
+  /* "POLACO" animation */
+  .titleWord2 {
+    animation-name: slideIn;
+    animation-delay: 0.5s; /* Delays slightly to slide in after "CINE" */
+  }
+  
+  /* Keyframes for sliding in */
+  @keyframes slideIn {
+    0% {
+      transform: translateX(100%); /* Off-screen to the right */
+      opacity: 0; /* Invisible */
+    }
+    100% {
+      transform: translateX(0); /* In-place */
+      opacity: 1; /* Fully visible */
+    }
+  }
+  

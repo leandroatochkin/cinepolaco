@@ -45,6 +45,11 @@ ui:{
     article_deleted: 'Artículo eliminado exitosamente.',
     related_videos: 'Videos relacionados',
     no_more_articles: 'No hay más artículos para mostrar.',
+    landing_paragraph: `“Este sitio es un espacio de fomento de la cultura polaca en idioma español. Desde la ciudad de Mar del Plata en Argentina, el espacio fue pensado para brindar una mayor información, difundiendo conocimientos sobre la historia y la cultura de Polonia a través del cine. Además, siendo el administrador del sitio, me encuentro involucrado en las actividades que competen a la Colectividad polaca en Mar del Plata, registrando sus acontecimientos.”`,
+    loading: 'cargando'
+},
+people:{
+    jose: 'José Stawecki'
 }
 }
 
