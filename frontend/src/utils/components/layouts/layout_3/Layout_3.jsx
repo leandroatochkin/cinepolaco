@@ -14,7 +14,7 @@ const Layout_3 = ({content, videos}) => {
     className={style.container}
     aria-label="Article Content Container">
     <div className={style.videoContainer}>
-            
+    {videos && <h3 style={{color: '#212427'}}>{language.ui.related_videos}</h3>}
             {videos && videos.map((video,index)=>(
               <div 
               key={index} 
@@ -36,7 +36,7 @@ const Layout_3 = ({content, videos}) => {
               </div>
             </div>
             <div style={{marginTop: '10%'}}>
-            {videos && <h3 style={{color: '#212427'}}>{language.ui.related_videos}</h3>}
+
             
             </div>
             

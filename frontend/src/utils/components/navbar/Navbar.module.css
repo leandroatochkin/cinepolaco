@@ -1,67 +1,66 @@
-.navbar{
-    width: 100%;
-    color: white;
-    background-color: rgb(220,20,60);
-    height: 8vh;
-    transition: height 0.1s ease-in-out;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+
+@media only screen and (max-width: 665px){
+    .navbar{
+        width: 100%;
+        color: white;
+        background-color: rgb(220,20,60);
+        height: 8vh;
+        transition: height 0.1s ease-in-out;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        z-index: 999;
+    }
+    
+    
+    .navbarOpen{
+        height: 38%;
+        background-color: rgb(220,20,60);
+        transition: height 0.1s ease-in-out;
+        width: 100vw;
+        z-index: 999;
+    }
+    
+    .topContainer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 10vh;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .title{
+        font-family: "Oswald", sans-serif;
+        margin-left: 2%;
+    }
+    
+    .buttonsContainerVisible{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .buttonsContainerHidden{
+        display: none;
+    }
+    
+    .openMenuButton{
+        background-color: transparent;
+        border: none;
+        margin-right: 5vw;
+    }
+    
+    .navbarLink{
+        background-color: transparent;
+        border: none;
+        font-weight: bolder;
+        padding: 1%;
+        transition: all 0.1s ease-in;
+        font-size: 1rem;
+    }
 }
 
-
-.navbarOpen{
-    height: 45%;
-    background-color: rgb(220,20,60);
-    transition: height 0.1s ease-in-out;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    z-index: 999;
-}
-
-.topContainer{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 10vh;
-    padding: 0;
-    margin: 0;
-}
-
-.title{
-    font-family: "Oswald", sans-serif;
-    margin-left: 2%;
-}
-
-.buttonsContainerVisible{
-    display: flex;
-    flex-direction: column;
-}
-
-.buttonsContainerHidden{
-    display: none;
-}
-
-.openMenuButton{
-    background-color: transparent;
-    border: none;
-    margin-right: 5vw;
-}
-
-.navbarLink{
-    background-color: transparent;
-    border: none;
-    font-weight: bolder;
-    padding: 1%;
-    transition: all 0.1s ease-in;
-    font-size: 1rem;
-}
 
 @media only screen and (min-width: 666px) and (max-height: 420px){
     .navbar{

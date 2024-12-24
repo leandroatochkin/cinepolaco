@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { uiStore } from '../../utils/stores/uiStore';
 import style from './Articles.module.css';
@@ -35,34 +35,52 @@ const Articles = ({ category }) => {
   //     .catch((error) => console.error('Error fetching articles:', error));
   // }, []);
 
-  const fetchArticles = async () => {
-    setLoading(true)
-     axios
-       .get(api.get_articles)
-       .then((response) => {
-         setArticles((prev) => [...prev, ...response.data])
-         setHasMore(response.length > 0)
-       })
-       .finally(setLoading(false))
-       .catch((error) => console.error('Error fetching articles:', error));
-  }
+  const fetchArticles = async (page) => {
+    try {
+      setLoading(true);
+  
+      const response = await axios.get(api.get_articles, { params: { page: page, pageSize: 2} });
+      console.log(response.data)
+      if (response.data && response.data.articles) {
+        const newArticles = response.data.articles;
+  
+        setArticles((prevArticles) => {
+          // Avoid duplication
+          const uniqueArticles = newArticles.filter(
+            (newArticle) => !prevArticles.some((article) => article.id === newArticle.id)
+          );
+          return [...prevArticles, ...uniqueArticles];
+        });
+  
+        setHasMore(newArticles.length > 0); // Check if more articles are available
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
+    console.log("Scroll event triggered");
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 100 &&
       !loading &&
       hasMore
     ) {
+      console.log("Fetching next page");
       setPage((prevPage) => prevPage + 1);
     }
-  };
-
-  useEffect(() => {
-    // Add event listener for scrolling
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, hasMore]);
+
+
+
+
+  
 
   useEffect(() => {
     fetchArticles(page); // Fetch articles when the page changes
@@ -78,7 +96,7 @@ const Articles = ({ category }) => {
 
 
   return (
-    <div className={style.container}>
+    <div className={style.container} onScroll={handleScroll}>
       {openModal && <ImageModal setImages={setImages} images={images} openingImage={images[0]} />}
       {articles
         .filter((article) => article.category === category)

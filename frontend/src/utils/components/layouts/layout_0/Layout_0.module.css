@@ -1,6 +1,5 @@
 .container{
     position: relative;
-    margin: 20px;
 }
 
 .content{
@@ -37,6 +36,7 @@
 }
 
 .videoContainer{
+    width: 100vw;
     display: flex;
     flex-direction: column; 
 }

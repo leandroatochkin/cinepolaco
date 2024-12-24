@@ -1,9 +1,9 @@
 import { api } from "../api_index";
 import axios from 'axios';
 
-export const fetchArticles = async (stateSetter) => {
+export const fetchArticles = async (stateSetter, page, pageSize) => {
     try {
-      const response = await axios.get(api.get_articles);
+      const response = await axios.get(`${api.get_articles}?page=${page}&pageSize=${pageSize}`);
       stateSetter(response.data);
     } catch (error) {
       console.error('Error fetching articles:', error);

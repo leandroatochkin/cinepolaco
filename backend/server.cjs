@@ -58,15 +58,42 @@ const upload = multer({ storage });
 
 // Get all articles
 app.get('/articles', (req, res) => {
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const pageSize = parseInt(req.query.pageSize) || 10; // Default to 10 items per page
+
+    console.log(page, pageSize)
+
     fs.readdir(articlesPath, (err, files) => {
         if (err) return res.status(500).send('Failed to read articles.');
-        const articles = files.map(file => {
+
+        // Sort files by their last modified time or other criteria if needed
+        files.sort((a, b) => {
+            const fileAPath = path.join(articlesPath, a);
+            const fileBPath = path.join(articlesPath, b);
+            return fs.statSync(fileBPath).mtime - fs.statSync(fileAPath).mtime;
+        });
+
+        // Calculate pagination boundaries
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+
+        // Slice the files for the current page
+        const paginatedFiles = files.slice(startIndex, endIndex);
+
+        // Read and parse articles for the current page
+        const articles = paginatedFiles.map((file) => {
             const filePath = path.join(articlesPath, file);
             return JSON.parse(fs.readFileSync(filePath, 'utf8'));
         });
-        res.json(articles);
+
+        // Prepare response with `hasMore` flag
+        res.json({
+            articles,
+            hasMore: endIndex < files.length, // Check if there are more articles
+        });
     });
 });
+
 
 // Upload a new article with image
 app.post('/articles', upload.array('images'), (req, res) => {
